@@ -32,7 +32,7 @@ test.describe('Dashboard page', () => {
             await expect(dashboardPage.employeeDistributionByLocationWidet).toBeVisible();
         });
 
-        await test.step('verify Logout Functionality', async()=>{
+        await test.step('verify Logout Functionality', async () => {
 
             await dashboardPage.clickOnUserDropDownIcon();
             await dashboardPage.clickOnLogOutButton();
