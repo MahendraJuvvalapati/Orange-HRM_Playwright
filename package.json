@@ -1,0 +1,26 @@
+{
+  "name": "playwrightpractice",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "allure:copy-history": "powershell -Command \"if (Test-Path 'allure-report/history') { Copy-Item -Recurse -Force 'allure-report/history' 'allure-results/history' }\"",
+    "allure:generate": "allure generate ./allure-results -o allure-report --clean",
+    "allure:open": "allure open allure-report"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/node": "^25.2.3",
+    "allure-commandline": "^2.37.0",
+    "allure-playwright": "^3.5.0",
+    "rimraf": "^6.1.3"
+  },
+  "dependencies": {
+    "csv-parse": "^6.1.0"
+  }
+}
