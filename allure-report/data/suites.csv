@@ -1,6 +1,0 @@
-"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","12291","Login with invalid credentials","chromium","2026-02-27","passed","2026-02-27","Login Feature","loginTest.spec.ts","",""
-"","8857","verfiy cancel forgot password","chromium","2026-02-27","passed","2026-02-27","Forgot Password Feature","forgotPassword.spec.ts","",""
-"","13580","Login with valid credentials","chromium","2026-02-27","passed","2026-02-27","Login Feature","loginTest.spec.ts","",""
-"","9477","Verify succesful password reset","chromium","2026-02-27","passed","2026-02-27","Login Feature","forgotPassword.spec.ts","",""
-"","10622","Verify succesful password reset","chromium","2026-02-27","passed","2026-02-27","Forgot Password Feature","forgotPassword.spec.ts","",""
