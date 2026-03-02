@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "playwright test",
+    "clean-reports": "rm -rf allure-report && rm -rf allure-results",
     "allure:copy-history": "powershell -Command \"if (Test-Path 'allure-report/history') { Copy-Item -Recurse -Force 'allure-report/history' 'allure-results/history' }\"",
     "allure:generate": "allure generate ./allure-results -o allure-report --clean",
     "allure:open": "allure open allure-report"
