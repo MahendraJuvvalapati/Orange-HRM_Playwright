@@ -2,6 +2,7 @@ import { Page, Locator, expect, test } from '@playwright/test';
 
 export class BasePage {
   protected readonly page: Page;
+  protected readonly defaultTimeout = 10_000; // 10 seconds
 
   constructor(page: Page) {
     this.page = page;
@@ -36,21 +37,20 @@ export class BasePage {
   }
 
   // =====================================================
-  // 🔹 Safe Actions (Auto Wait + Retry)
+  // 🔹 Safe Actions (Auto Wait + Timeout Control)
   // =====================================================
 
   async click(locator: Locator) {
-    await this.step(`Click on element`, async () => {
-      await locator.waitFor({ state: 'visible' });
-      await locator.click({ timeout: 10000 });
+    await this.step(`Click element`, async () => {
+      await locator.waitFor({ state: 'visible', timeout: this.defaultTimeout });
+      await locator.click({ timeout: this.defaultTimeout });
     });
   }
 
   async type(locator: Locator, text: string) {
     await this.step(`Type "${text}"`, async () => {
-      await locator.waitFor({ state: 'visible' });
-      await locator.fill('');
-      await locator.fill(text);
+      await locator.waitFor({ state: 'visible', timeout: this.defaultTimeout });
+      await locator.fill(text, { timeout: this.defaultTimeout });
     });
   }
 
@@ -83,23 +83,25 @@ export class BasePage {
   }
 
   // =====================================================
-  // 🔹 Wait Helpers
+  // 🔹 Wait Helpers (No Hard Waits)
   // =====================================================
 
   async waitForVisible(locator: Locator) {
-    await locator.waitFor({ state: 'visible' });
+    await locator.waitFor({ state: 'visible', timeout: this.defaultTimeout });
   }
 
   async waitForHidden(locator: Locator) {
-    await locator.waitFor({ state: 'hidden' });
+    await locator.waitFor({ state: 'hidden', timeout: this.defaultTimeout });
   }
 
   async waitForAttached(locator: Locator) {
-    await locator.waitFor({ state: 'attached' });
+    await locator.waitFor({ state: 'attached', timeout: this.defaultTimeout });
   }
 
-  async wait(milliseconds: number) {
-    await this.page.waitForTimeout(milliseconds);
+  // ❌ Removed waitForTimeout (Hard Wait)
+  // If absolutely required, use carefully:
+  async pause(seconds: number) {
+    await this.page.waitForTimeout(seconds * 1000);
   }
 
   // =====================================================
@@ -107,23 +109,25 @@ export class BasePage {
   // =====================================================
 
   async expectVisible(locator: Locator) {
-    await expect(locator).toBeVisible();
+    await expect(locator).toBeVisible({ timeout: this.defaultTimeout });
   }
 
   async expectHidden(locator: Locator) {
-    await expect(locator).toBeHidden();
+    await expect(locator).toBeHidden({ timeout: this.defaultTimeout });
   }
 
   async expectText(locator: Locator, text: string) {
-    await expect(locator).toHaveText(text);
+    await expect(locator).toHaveText(text, { timeout: this.defaultTimeout });
   }
 
   async expectContainsText(locator: Locator, text: string) {
-    await expect(locator).toContainText(text);
+    await expect(locator).toContainText(text, { timeout: this.defaultTimeout });
   }
 
   async expectUrlContains(text: string) {
-    await expect(this.page).toHaveURL(new RegExp(text));
+    await expect(this.page).toHaveURL(new RegExp(text), {
+      timeout: this.defaultTimeout,
+    });
   }
 
   // =====================================================
@@ -131,11 +135,11 @@ export class BasePage {
   // =====================================================
 
   async softExpectVisible(locator: Locator) {
-    await expect.soft(locator).toBeVisible();
+    await expect.soft(locator).toBeVisible({ timeout: this.defaultTimeout });
   }
 
   async softExpectText(locator: Locator, text: string) {
-    await expect.soft(locator).toHaveText(text);
+    await expect.soft(locator).toHaveText(text, { timeout: this.defaultTimeout });
   }
 
   // =====================================================
@@ -203,8 +207,10 @@ export class BasePage {
   // =====================================================
 
   async waitForResponse(urlPart: string) {
-    await this.page.waitForResponse(response =>
-      response.url().includes(urlPart) && response.status() === 200
+    await this.page.waitForResponse(
+      response =>
+        response.url().includes(urlPart) && response.status() === 200,
+      { timeout: this.defaultTimeout }
     );
   }
 
